@@ -1,0 +1,4 @@
+boto3==1.34.64
+Pillow==10.2.0
+pytest==8.1.1
+Requests==2.31.0
