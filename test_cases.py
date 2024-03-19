@@ -84,8 +84,8 @@ def test_download_image_ok(mock_response_ok):
 
 def test_download_image_not_ok(mock_response_not_ok):
     url = "http://example.com/non_existent_image.jpg"
-    with (patch('sqs_message_receiver.requests.get') as mock_get,
-          patch('sqs_message_receiver.logger.error') as mock_logger_error):
+    with patch('sqs_message_receiver.requests.get') as mock_get,\
+         patch('sqs_message_receiver.logger.error') as mock_logger_error:
         mock_get.return_value = mock_response_not_ok
         image_data = download_image(url)
         assert image_data is None
@@ -117,8 +117,8 @@ def test_process_message_receive_count_exceeded(mock_sqs_client, mock_message):
 
 
 def test_process_message_exception(mock_sqs_client, mock_message):
-    with (patch('sqs_message_receiver.process_valid_message') as mock_process_valid_message,
-          patch('sqs_message_receiver.logger.error') as mock_logger_error):
+    with patch('sqs_message_receiver.process_valid_message') as mock_process_valid_message,\
+         patch('sqs_message_receiver.logger.error') as mock_logger_error:
         mock_process_valid_message.side_effect = ValueError("Test error")
         process_message(mock_sqs_client, mock_message)
         mock_logger_error.assert_called_once_with("ValueError: Test error. Unable to parse message body as JSON.")
